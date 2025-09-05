@@ -14,7 +14,16 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+// Configure CORS to allow requests from your front-end
+const corsOptions = {
+    // Replace this with the actual URL of your front-end, e.g., 'http://127.0.0.1:5500'
+    origin: 'http://127.0.0.1:5500', 
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type'],
+};
+app.use(cors(corsOptions));
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -105,7 +114,7 @@ app.post('/signup', async (req, res) => {
         res.status(201).json({
             message: 'User registered successfully! A verification code has been sent to your email.',
             email: newUser.email,
-            redirect: '/verification/verification.html' // Corrected path
+            redirect: '/verification/verification.html'
         });
 
     } catch (err) {
@@ -141,7 +150,7 @@ app.post('/verification', async (req, res) => {
         user.verificationTokenExpires = undefined;
         await user.save();
 
-        res.status(200).json({ message: 'Account verified successfully!', redirect: '/login/login.html?verified=true' }); // Corrected path
+        res.status(200).json({ message: 'Account verified successfully!', redirect: '/login/login.html?verified=true' });
     } catch (err) {
         console.error('Error during code verification:', err);
         res.status(500).json({ error: 'Error verifying code.' });
@@ -202,7 +211,7 @@ app.post('/login', async (req, res) => {
             await user.save();
             await sendVerificationEmail(user.email, newVerificationCode);
 
-            return res.status(403).json({ error: 'Please verify your email first. A new code has been sent.', redirect: '/verification/verification.html' }); // Corrected path
+            return res.status(403).json({ error: 'Please verify your email first. A new code has been sent.', redirect: '/verification/verification.html' });
         }
 
         const isPasswordMatch = await bcrypt.compare(password, user.password);
@@ -210,7 +219,7 @@ app.post('/login', async (req, res) => {
             res.status(200).json({
                 message: 'Login successful!',
                 email: user.email,
-                redirect: '/dashboard/dashboard.html' // Corrected path
+                redirect: '/dashboard/dashboard.html'
             });
         } else {
             res.status(401).json({ error: 'Invalid credentials.' });
