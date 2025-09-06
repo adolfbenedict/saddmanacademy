@@ -29,8 +29,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // New route to serve the main signup page
+// In your server.js file
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'signup', 'signup.html'));
+    res.sendFile(path.join(__dirname, '..', 'public', 'signup', 'signup.html'));
 });
 
 
