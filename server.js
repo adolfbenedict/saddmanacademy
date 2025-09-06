@@ -14,9 +14,8 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-// Configure CORS to allow requests from your front-end
+// Correctly configure CORS to allow requests from your local front-end
 const corsOptions = {
-    // Replace this with the actual URL of your front-end, e.g., 'http://127.0.0.1:5500'
     origin: 'http://127.0.0.1:5500', 
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
