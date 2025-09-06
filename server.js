@@ -14,7 +14,7 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-// Correctly configure CORS to allow requests from your local front-end
+// Correct CORS configuration
 const corsOptions = {
     origin: 'http://127.0.0.1:5500', 
     methods: ['GET', 'POST'],
@@ -27,6 +27,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+// New route to serve the main signup page
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'signup', 'signup.html'));
+});
+
 
 const MONGODB_URI = process.env.MONGODB_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
